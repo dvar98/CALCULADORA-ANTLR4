@@ -59,7 +59,7 @@ typedef int YYSTYPE;
 extern YYSTYPE yylval;
 ```
 
-###Explicación:
+### Explicación:
 
 Definición de Tokens: Aquí se definen los tokens que fueron identificados por el lexer. Estos tokens son utilizados por el parser para reconocer la estructura de la expresión matemática.
 
