@@ -58,6 +58,17 @@ El parser, generado por *Bison*, toma los tokens del lexer y construye un árbol
 typedef int YYSTYPE;
 extern YYSTYPE yylval;
 ```
+
+###Explicación:
+
+Definición de Tokens: Aquí se definen los tokens que fueron identificados por el lexer. Estos tokens son utilizados por el parser para reconocer la estructura de la expresión matemática.
+
+Tipo de Valor: YYSTYPE se define como int, lo que significa que los valores asociados a los tokens serán enteros (por ejemplo, los números leídos).
+
+yylval: Es una variable global utilizada por el lexer para almacenar el valor del token actual. Este valor es luego utilizado por el parser durante el análisis sintáctico.
+
+El parser usa estos tokens para construir un árbol de sintaxis que representa la expresión. Este árbol de sintaxis se organiza de manera que cada operación aritmética tiene sus operandos (números o expresiones anidadas) como hijos.
+
 ### 3. Evaluación
 
 Finalmente, la expresión se evalúa recorriendo el árbol de sintaxis y calculando los resultados en cada nodo. El resultado final de la expresión se obtiene en la raíz del árbol, que es devuelto por la calculadora.
