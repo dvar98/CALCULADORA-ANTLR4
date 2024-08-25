@@ -1,4 +1,4 @@
-# CALCULADORA-ANTLR4
+# CALCULADORA-BISON
 ## Funcionamiento de la Calculadora
 
 ### 1. Tokenización
