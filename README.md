@@ -71,6 +71,47 @@ El parser usa estos tokens para construir un árbol de sintaxis que representa l
 
 ### 3. Evaluación
 
+
+
 Finalmente, la expresión se evalúa recorriendo el árbol de sintaxis y calculando los resultados en cada nodo. El resultado final de la expresión se obtiene en la raíz del árbol, que es devuelto por la calculadora.
 
 Esta implementación es un ejemplo básico de cómo se pueden utilizar *Flex* y *Bison* para construir un compilador o intérprete simple que maneja expresiones aritméticas.
+
+## Documentación de Pruebas Funcionales
+![Imagen de WhatsApp 2024-08-25 a las 21 56 13_ccfba494](https://github.com/user-attachments/assets/247d9495-d3c5-4399-bcd4-bcc5df76577e)
+
+
+
+### Prueba 1: Operaciones Aritméticas Básicas
+
+| **Operación**   | **Entrada** | **Salida Esperada** | **Salida Obtenida** | **Resultado** |
+|-----------------|-------------|---------------------|---------------------|---------------|
+| Suma            | `3 + 2`     | `= 5`               | `= 5`               | ✅ Éxito       |
+| Resta           | `7 - 5`     | `= 2`               | `= 2`               | ✅ Éxito       |
+| Multiplicación  | `4 * 3`     | `= 12`              | `= 12`              | ✅ Éxito       |
+| División        | `10 / 2`    | `= 5`               | `= 5`               | ✅ Éxito       |
+
+**Conclusión:** Todas las operaciones aritméticas básicas funcionaron correctamente y los resultados fueron los esperados.
+
+### Prueba 2: Expresiones Complejas
+
+| **Operación**                    | **Entrada**   | **Salida Esperada** | **Salida Obtenida** | **Resultado** |
+|----------------------------------|---------------|---------------------|---------------------|---------------|
+| Operación combinada sin paréntesis | `2 + 3 * 4` | `= 14`              | `= 14`              | ✅ Éxito       |
+| Operación combinada con paréntesis | `(2 + 3) * 4` | `= 20`              | `= 20`              | ✅ Éxito       |
+
+**Conclusión:** La calculadora respetó la precedencia de operadores y los paréntesis en las expresiones más complejas.
+
+### Prueba 3: Manejo de Errores
+
+| **Escenario**                | **Entrada** | **Salida Esperada**           | **Salida Obtenida**           | **Resultado** |
+|------------------------------|-------------|--------------------------------|--------------------------------|---------------|
+| Caracteres no válidos         | `3 + x`     | Error: Carácter no válido `x`  | `error: Mystery character x`   | ✅ Éxito       |
+
+**Conclusión:** La calculadora manejó correctamente la entrada con caracteres no válidos, mostrando un mensaje de error adecuado.
+
+---
+
+### Resumen
+
+Las pruebas demostraron que la calculadora funciona correctamente en todas las áreas probadas, incluyendo operaciones aritméticas básicas, manejo de expresiones complejas y detección de errores en la entrada. La calculadora produce resultados precisos y maneja errores de manera adecuada.
