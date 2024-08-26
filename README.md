@@ -92,6 +92,79 @@ Esta implementación es un ejemplo básico de cómo se pueden utilizar *Flex* y 
 | División        | `10 / 2`    | `= 5`               | `= 5`               | ✅ Éxito       |
 
 **Conclusión:** Todas las operaciones aritméticas básicas funcionaron correctamente y los resultados fueron los esperados.
+### Evaluación de Expresiones
+
+La evaluación de las expresiones se realiza recorriendo el árbol de sintaxis, calculando los resultados en cada nodo. A continuación se detalla el análisis para cada tipo de operación:
+
+#### 1. **Suma**
+
+**Entrada:** `3 + 2`  
+**Salida Esperada:** `= 5`
+
+**Construcción del Árbol de Sintaxis:**
+    +
+   / \
+  3   2
+
+**Evaluación del Árbol:**
+- **Nodos Hoja:** Los valores `3` y `2` se toman directamente.
+- **Nodo Interno:** El nodo `+` realiza la operación `3 + 2`.
+
+**Resultado:** La evaluación resulta en `5`. La operación de suma se realiza correctamente al sumar los valores de los nodos hijos.
+
+#### 2. **Resta**
+
+**Entrada:** `7 - 5`  
+**Salida Esperada:** `= 2`
+
+**Construcción del Árbol de Sintaxis:**
+
+    -
+   / \
+  7   5
+
+**Evaluación del Árbol:**
+- **Nodos Hoja:** Los valores `7` y `5` se toman directamente.
+- **Nodo Interno:** El nodo `-` realiza la operación `7 - 5`.
+
+**Resultado:** La evaluación resulta en `2`. La operación de resta se realiza correctamente al restar el valor del nodo derecho del nodo izquierdo.
+
+#### 3. **Multiplicación**
+
+**Entrada:** `4 * 3`  
+**Salida Esperada:** `= 12`
+
+**Construcción del Árbol de Sintaxis:**
+    *
+   / \
+  4   3
+
+**Evaluación del Árbol:**
+- **Nodos Hoja:** Los valores `4` y `3` se toman directamente.
+- **Nodo Interno:** El nodo `*` realiza la operación `4 * 3`.
+
+**Resultado:** La evaluación resulta en `12`. La operación de multiplicación se realiza correctamente al multiplicar los valores de los nodos hijos.
+
+#### 4. **División**
+
+**Entrada:** `10 / 2`  
+**Salida Esperada:** `= 5`
+
+**Construcción del Árbol de Sintaxis:**
+    /
+   / \
+  10  2
+
+**Evaluación del Árbol:**
+- **Nodos Hoja:** Los valores `10` y `2` se toman directamente.
+- **Nodo Interno:** El nodo `/` realiza la operación `10 / 2`.
+
+**Resultado:** La evaluación resulta en `5`. La operación de división se realiza correctamente al dividir el valor del nodo izquierdo por el valor del nodo derecho.
+
+**Resumen General:**
+
+La evaluación de expresiones aritméticas básicas en la calculadora se realiza mediante la construcción de un árbol de sintaxis para cada expresión. Luego, el árbol se recorre de manera recursiva, evaluando los valores en los nodos hoja y aplicando las operaciones definidas en los nodos internos. Cada operación (suma, resta, multiplicación, y división) es procesada de acuerdo con su correspondiente regla en la gramática definida, asegurando que los resultados sean correctos y reflejen la lógica aritmética esperada.
+
 
 ### Prueba 2: Expresiones Complejas
 
