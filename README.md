@@ -1,190 +1,86 @@
-# CALCULADORA-BISON
-## Funcionamiento de la Calculadora
+# Calculadora con Flex y Bison
 
-### 1. Tokenización
+Este proyecto implementa una calculadora básica utilizando Flex y Bison, que permite realizar operaciones aritméticas, bit a bit, y calcular valores absolutos. El proyecto está compuesto principalmente por dos archivos: `calculadora.l` (escáner léxico) y `calculadora.y` (analizador sintáctico).
 
-La entrada se divide en tokens utilizando *Flex*. Los tokens reconocidos incluyen operadores aritméticos (`+`, `-`, `*`, `/`), paréntesis (`(`, `)`), números enteros, y el fin de línea. Los comentarios y espacios en blanco se ignoran. Cualquier carácter no reconocido genera un error.
-## Código del Lexer (`fb1-5.l`)
+## Características
 
-```
-%%
-"+"    { return ADD; }
-"-"    { return SUB; }
-"*"    { return MUL; }
-"/"    { return DIV; }
-"|"    { return ABS; }
-"("    { return OP; }
-")"    { return CP; }
-[0-9]+ { yylval = atoi(yytext); return NUMBER; }
+- **Operaciones aritméticas:** Suma, resta, multiplicación, división.
+- **Operaciones bit a bit:** AND, OR.
+- **Cálculo de valores absolutos:** Utilizando `|` para encerrar el valor.
+- **Soporte para números negativos.**
+- **Conversión automática a hexadecimal para los resultados.**
+- **Detección y manejo de errores comunes.**
 
-\n     { return EOL; }
-"//".*  
-[ \t]  { /* ignore white space */ }
-.      { yyerror("Mystery character %c\n", *yytext); }
-%%
-```
-### 2. Análisis
+## Requisitos
 
-El parser, generado por *Bison*, toma los tokens del lexer y construye un árbol de sintaxis que representa la estructura de la expresión matemática. Este árbol organiza las operaciones y los operandos de acuerdo con las reglas de precedencia y asociación.
+- Flex
+- Bison
+- GCC (o cualquier compilador compatible con C)
 
+## Instalación
 
-```
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-   enum yytokentype {
-     NUMBER = 258,
-     ADD = 259,
-     SUB = 260,
-     MUL = 261,
-     DIV = 262,
-     ABS = 263,
-     OP = 264,
-     CP = 265,
-     EOL = 266
-   };
-#endif
+1. Clona el repositorio en tu máquina local:
+    ```sh
+    git clone https://tu-repositorio-url.git
+    cd tu-repositorio
+    ```
 
-/* Tokens.  */
-#define NUMBER 258
-#define ADD 259
-#define SUB 260
-#define MUL 261
-#define DIV 262
-#define ABS 263
-#define OP 264
-#define CP 265
-#define EOL 266
+2. Genera los archivos de código a partir de los archivos de definición:
+    ```sh
+    flex calculadora.l
+    bison -d calculadora.y
+    ```
 
-typedef int YYSTYPE;
-extern YYSTYPE yylval;
+3. Compila el proyecto:
+    ```sh
+    gcc lex.yy.c calculadora.tab.c -o calculadora -lm
+    ```
+
+## Uso
+
+Una vez compilada, puedes ejecutar la calculadora desde la línea de comandos:
+
+```sh
+./calculadora
 ```
 
-### Explicación:
 
-Definición de Tokens: Aquí se definen los tokens que fueron identificados por el lexer. Estos tokens son utilizados por el parser para reconocer la estructura de la expresión matemática.
+## Ejemplos
 
-Tipo de Valor: YYSTYPE se define como int, lo que significa que los valores asociados a los tokens serán enteros (por ejemplo, los números leídos).
+``` 
+Input: 3 + 5
+Output: = 8.000000000000000000000 (decimal) = 8(hexadecimal)
 
-yylval: Es una variable global utilizada por el lexer para almacenar el valor del token actual. Este valor es luego utilizado por el parser durante el análisis sintáctico.
+Input: | -5 |
+Output: = 5.000000000000000000000 (decimal) = 5(hexadecimal)
 
-El parser usa estos tokens para construir un árbol de sintaxis que representa la expresión. Este árbol de sintaxis se organiza de manera que cada operación aritmética tiene sus operandos (números o expresiones anidadas) como hijos.
+Input: 10 / 0
+Output: No se puede dividir entre cero
 
-### 3. Evaluación
+Input: 5 - 5
+Output: = 0 (decimal) = 0 (hexadecimal)
 
+```
 
+## Estructura del proyecto
 
-Finalmente, la expresión se evalúa recorriendo el árbol de sintaxis y calculando los resultados en cada nodo. El resultado final de la expresión se obtiene en la raíz del árbol, que es devuelto por la calculadora.
+- calculadora.l: Archivo de definición léxica que describe los patrones que deben ser reconocidos por el escáner.
 
-Esta implementación es un ejemplo básico de cómo se pueden utilizar *Flex* y *Bison* para construir un compilador o intérprete simple que maneja expresiones aritméticas.
+- calculadora.y: Archivo de definición sintáctica que define las reglas de gramática y la lógica de la calculadora.
 
-## Documentación de Pruebas Funcionales
-![Imagen de WhatsApp 2024-08-25 a las 21 56 13_ccfba494](https://github.com/user-attachments/assets/247d9495-d3c5-4399-bcd4-bcc5df76577e)
+- calculadora.tab.h y calculadora.tab.c: Archivos generados por Bison que contienen las tablas de análisis sintáctico.calculadora.l: Archivo de definición léxica que describe los patrones que deben ser reconocidos por el escáner.
+calculadora.y: Archivo de definición sintáctica que define las reglas de gramática y la lógica de la calculadora.
+calculadora.tab.h y calculadora.tab.c: Archivos generados por Bison que contienen las tablas de análisis sintáctico.
+lex.yy.c: Archivo generado por Flex que contiene el código del escáner léxic
 
+- lex.yy.c: Archivo generado por Flex que contiene el código del escáner léxico
 
+## Licencia 
 
-### Prueba 1: Operaciones Aritméticas Básicas
+Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
-| **Operación**   | **Entrada** | **Salida Esperada** | **Salida Obtenida** | **Resultado** |
-|-----------------|-------------|---------------------|---------------------|---------------|
-| Suma            | `3 + 2`     | `= 5`               | `= 5`               | ✅ Éxito       |
-| Resta           | `7 - 5`     | `= 2`               | `= 2`               | ✅ Éxito       |
-| Multiplicación  | `4 * 3`     | `= 12`              | `= 12`              | ✅ Éxito       |
-| División        | `10 / 2`    | `= 5`               | `= 5`               | ✅ Éxito       |
+## Equipo
 
-**Conclusión:** Todas las operaciones aritméticas básicas funcionaron correctamente y los resultados fueron los esperados.
-### Evaluación de Expresiones
-
-La evaluación de las expresiones se realiza recorriendo el árbol de sintaxis, calculando los resultados en cada nodo. A continuación se detalla el análisis para cada tipo de operación:
-
-#### 1. **Suma**
-
-**Entrada:** `3 + 2`  
-**Salida Esperada:** `= 5`
-
-**Construcción del Árbol de Sintaxis:**
-    +
-   / \
-  3   2
-
-**Evaluación del Árbol:**
-- **Nodos Hoja:** Los valores `3` y `2` se toman directamente.
-- **Nodo Interno:** El nodo `+` realiza la operación `3 + 2`.
-
-**Resultado:** La evaluación resulta en `5`. La operación de suma se realiza correctamente al sumar los valores de los nodos hijos.
-
-#### 2. **Resta**
-
-**Entrada:** `7 - 5`  
-**Salida Esperada:** `= 2`
-
-**Construcción del Árbol de Sintaxis:**
-
-    -
-   / \
-  7   5
-
-**Evaluación del Árbol:**
-- **Nodos Hoja:** Los valores `7` y `5` se toman directamente.
-- **Nodo Interno:** El nodo `-` realiza la operación `7 - 5`.
-
-**Resultado:** La evaluación resulta en `2`. La operación de resta se realiza correctamente al restar el valor del nodo derecho del nodo izquierdo.
-
-#### 3. **Multiplicación**
-
-**Entrada:** `4 * 3`  
-**Salida Esperada:** `= 12`
-
-**Construcción del Árbol de Sintaxis:**
-    *
-   / \
-  4   3
-
-**Evaluación del Árbol:**
-- **Nodos Hoja:** Los valores `4` y `3` se toman directamente.
-- **Nodo Interno:** El nodo `*` realiza la operación `4 * 3`.
-
-**Resultado:** La evaluación resulta en `12`. La operación de multiplicación se realiza correctamente al multiplicar los valores de los nodos hijos.
-
-#### 4. **División**
-
-**Entrada:** `10 / 2`  
-**Salida Esperada:** `= 5`
-
-**Construcción del Árbol de Sintaxis:**
-    /
-   / \
-  10  2
-
-**Evaluación del Árbol:**
-- **Nodos Hoja:** Los valores `10` y `2` se toman directamente.
-- **Nodo Interno:** El nodo `/` realiza la operación `10 / 2`.
-
-**Resultado:** La evaluación resulta en `5`. La operación de división se realiza correctamente al dividir el valor del nodo izquierdo por el valor del nodo derecho.
-
-**Resumen General:**
-
-La evaluación de expresiones aritméticas básicas en la calculadora se realiza mediante la construcción de un árbol de sintaxis para cada expresión. Luego, el árbol se recorre de manera recursiva, evaluando los valores en los nodos hoja y aplicando las operaciones definidas en los nodos internos. Cada operación (suma, resta, multiplicación, y división) es procesada de acuerdo con su correspondiente regla en la gramática definida, asegurando que los resultados sean correctos y reflejen la lógica aritmética esperada.
-
-
-### Prueba 2: Expresiones Complejas
-
-| **Operación**                    | **Entrada**   | **Salida Esperada** | **Salida Obtenida** | **Resultado** |
-|----------------------------------|---------------|---------------------|---------------------|---------------|
-| Operación combinada sin paréntesis | `2 + 3 * 4` | `= 14`              | `= 14`              | ✅ Éxito       |
-| Operación combinada con paréntesis | `(2 + 3) * 4` | `= 20`              | `= 20`              | ✅ Éxito       |
-
-**Conclusión:** La calculadora respetó la precedencia de operadores y los paréntesis en las expresiones más complejas.
-
-### Prueba 3: Manejo de Errores
-
-| **Escenario**                | **Entrada** | **Salida Esperada**           | **Salida Obtenida**           | **Resultado** |
-|------------------------------|-------------|--------------------------------|--------------------------------|---------------|
-| Caracteres no válidos         | `3 + x`     | Error: Carácter no válido `x`  | `error: Mystery character x`   | ✅ Éxito       |
-
-**Conclusión:** La calculadora manejó correctamente la entrada con caracteres no válidos, mostrando un mensaje de error adecuado.
-
----
-
-### Resumen
-
-Las pruebas demostraron que la calculadora funciona correctamente en todas las áreas probadas, incluyendo operaciones aritméticas básicas, manejo de expresiones complejas y detección de errores en la entrada. La calculadora produce resultados precisos y maneja errores de manera adecuada.
+- **Daniel Santiago Varela Guerrero**
+- **Miguel Angel Velasco**
+- **Sebastian Sabogal Castillo**
