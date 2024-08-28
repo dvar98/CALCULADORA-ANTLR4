@@ -1,24 +1,29 @@
+%option noyywrap nodefault yylineno
 %{
-#include "calc.tab.h"
+	#include "calculadora.tab.h"
+	#include <stdio.h>
+	#include <stdlib.h>
+
 %}
 
-%%
-
-sin     { return SENO; }
-cos     { return COSENO; }
-tan     { return TANGENTE; }
-
-[0-9]+(\.[0-9]+)?  { yylval.dval = atof(yytext); return NUMBER; }
-[+\-*/] { return yytext[0]; }
-\(      { return '('; }
-\)      { return ')'; }
-[ \t]   { /* ignorar espacios en blanco */ }
-\n      { return 0; }
-
-.       { printf("Caracter desconocido: %s\n", yytext); }
 
 %%
+"+" { return ADD; }
+"-" { return SUB; }
+"*" { return MUL; }
+"/" { return DIV; }
+"|" { return ABS; }
+"(" { return OP;  }
+")" { return CP;  }
+"&" { return AND; }
+"||" { return OR; }
 
-int yywrap() {
-    return 1;
-}
+[0-9]+ 		{ yylval.dval = atof(yytext); return NUMBER; }
+[0-9]+\.[0-9]+ { yylval.dval = atof(yytext); return NUMBER;}
+"-"[0-9]+ 		{ yylval.dval = -atof(yytext + 1); return NUMBER; }
+"-"[0-9]+\.[0-9]+ { yylval.dval = -atof(yytext + 1); return NUMBER;}
+\n 			{ return EOL; }
+[ \t]   	{ /* ignore white space */ }
+"//".* 		{  }
+. 			{ printf("Mystery character %c\n", *yytext); }
+%%
