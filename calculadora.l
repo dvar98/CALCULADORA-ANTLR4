@@ -17,6 +17,7 @@
 ")" { return CP;  }
 "&" { return AND; }
 "||" { return OR; }
+"^" {return ELV; }
 
 [0-9]+ 		{ yylval.dval = atof(yytext); return NUMBER; }
 [0-9]+\.[0-9]+ { yylval.dval = atof(yytext); return NUMBER;}

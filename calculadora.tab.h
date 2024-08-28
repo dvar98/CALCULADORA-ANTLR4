@@ -64,7 +64,8 @@ extern int yydebug;
     ABS = 265,                     /* ABS  */
     AND = 266,                     /* AND  */
     OR = 267,                      /* OR  */
-    EOL = 268                      /* EOL  */
+    ELV = 268,                     /* ELV  */
+    EOL = 269                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,11 +74,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 9 "calculadora.y"
+#line 10 "calculadora.y"
 
     double dval;
 
-#line 81 "calculadora.tab.h"
+#line 82 "calculadora.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
