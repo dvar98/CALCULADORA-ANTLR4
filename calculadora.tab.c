@@ -100,7 +100,64 @@ int error = 0;
 #  endif
 # endif
 
-#include "calculadora.tab.h"
+
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+
+/* Token kinds.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
+  {
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    NUMBER = 258,                  /* NUMBER  */
+    OP = 259,                      /* OP  */
+    CP = 260,                      /* CP  */
+    ADD = 261,                     /* ADD  */
+    SUB = 262,                     /* SUB  */
+    MUL = 263,                     /* MUL  */
+    DIV = 264,                     /* DIV  */
+    ABS = 265,                     /* ABS  */
+    AND = 266,                     /* AND  */
+    OR = 267,                      /* OR  */
+    ELV = 268,                     /* ELV  */
+    EOL = 269                      /* EOL  */
+  };
+  typedef enum yytokentype yytoken_kind_t;
+#endif
+
+/* Value type.  */
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+union YYSTYPE
+{
+#line 10 "calculadora.y"
+
+    double dval;
+
+#line 146 "calculadora.tab.c"
+
+};
+typedef union YYSTYPE YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
+#endif
+
+
+extern YYSTYPE yylval;
+
+
+int yyparse (void);
+
+
+
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1102,61 +1159,61 @@ yyreduce:
         }
         error = 0;
     }
-#line 1106 "calculadora.tab.c"
+#line 1163 "calculadora.tab.c"
     break;
 
   case 4: /* calclist: calclist EOL  */
 #line 40 "calculadora.y"
                    { /* Do nothing */ }
-#line 1112 "calculadora.tab.c"
+#line 1169 "calculadora.tab.c"
     break;
 
   case 6: /* exp: exp ADD factor  */
 #line 44 "calculadora.y"
                      { (yyval.dval) = (yyvsp[-2].dval) + (yyvsp[0].dval); }
-#line 1118 "calculadora.tab.c"
+#line 1175 "calculadora.tab.c"
     break;
 
   case 7: /* exp: exp SUB factor  */
 #line 45 "calculadora.y"
                      { (yyval.dval) = (yyvsp[-2].dval) - (yyvsp[0].dval); }
-#line 1124 "calculadora.tab.c"
+#line 1181 "calculadora.tab.c"
     break;
 
   case 8: /* exp: exp AND factor  */
 #line 46 "calculadora.y"
                      { (yyval.dval) = (int)(yyvsp[-2].dval) & (int)(yyvsp[0].dval); }
-#line 1130 "calculadora.tab.c"
+#line 1187 "calculadora.tab.c"
     break;
 
   case 9: /* exp: exp OR factor  */
 #line 47 "calculadora.y"
                     { (yyval.dval) = (yyvsp[-2].dval) || (yyvsp[0].dval); }
-#line 1136 "calculadora.tab.c"
+#line 1193 "calculadora.tab.c"
     break;
 
   case 10: /* exp: exp ELV factor  */
 #line 48 "calculadora.y"
                      { (yyval.dval) = pow((yyvsp[-2].dval), (yyvsp[0].dval)); }
-#line 1142 "calculadora.tab.c"
+#line 1199 "calculadora.tab.c"
     break;
 
   case 12: /* factor: factor MUL term  */
 #line 52 "calculadora.y"
                       { (yyval.dval) = (yyvsp[-2].dval) * (yyvsp[0].dval); }
-#line 1148 "calculadora.tab.c"
+#line 1205 "calculadora.tab.c"
     break;
 
   case 13: /* factor: factor MUL SUB term  */
 #line 53 "calculadora.y"
                           { (yyval.dval) = -(yyvsp[-3].dval) * (yyvsp[0].dval); }
-#line 1154 "calculadora.tab.c"
+#line 1211 "calculadora.tab.c"
     break;
 
   case 14: /* factor: factor DIV SUB term  */
 #line 54 "calculadora.y"
                           { (yyval.dval) = -(yyvsp[-3].dval) / (yyvsp[0].dval); }
-#line 1160 "calculadora.tab.c"
+#line 1217 "calculadora.tab.c"
     break;
 
   case 15: /* factor: factor DIV term  */
@@ -1170,7 +1227,7 @@ yyreduce:
             (yyval.dval) = (yyvsp[-2].dval) / (yyvsp[0].dval);
         }
     }
-#line 1174 "calculadora.tab.c"
+#line 1231 "calculadora.tab.c"
     break;
 
   case 17: /* term: ABS term ABS  */
@@ -1183,17 +1240,17 @@ yyreduce:
             (yyval.dval) = (yyvsp[-1].dval);
         }
     }
-#line 1187 "calculadora.tab.c"
+#line 1244 "calculadora.tab.c"
     break;
 
   case 18: /* term: OP exp CP  */
 #line 75 "calculadora.y"
                 { (yyval.dval) = (yyvsp[-1].dval); }
-#line 1193 "calculadora.tab.c"
+#line 1250 "calculadora.tab.c"
     break;
 
 
-#line 1197 "calculadora.tab.c"
+#line 1254 "calculadora.tab.c"
 
       default: break;
     }
